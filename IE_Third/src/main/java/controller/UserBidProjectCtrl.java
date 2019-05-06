@@ -1,6 +1,7 @@
 package controller;
 
 import model.Bid.Bid;
+import model.Exceptions.DupEndorse;
 import model.Exceptions.ProjectNotFound;
 import model.Project.Project;
 import model.Repo.GetRepo;
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.SQLException;
 
 @WebServlet("/userBidProjectCtrl")
 public class UserBidProjectCtrl extends HttpServlet {
@@ -30,9 +32,10 @@ public class UserBidProjectCtrl extends HttpServlet {
             projectNotFound.printStackTrace();
             response.setStatus(404, "project not found");
             return;
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         String bidAmount = request.getParameter("bidAmount");
-        User user = UsersRepo.getInstance().getLoginUser();
         GetRepo.print("bidAmount = " + bidAmount);
         if(bidAmount == null || Integer.valueOf(bidAmount) < 0){
             request.setAttribute("BidErrorMsg", "Bid amount is not set since invalid value of bid amount.");
@@ -40,15 +43,32 @@ public class UserBidProjectCtrl extends HttpServlet {
             return;
         }
 
-            Bid bid = new Bid(UsersRepo.getInstance().getLoginUser(), project, Integer.valueOf(bidAmount));
-            if(!bid.isValid()){
+        Bid bid = null;
+        try {
+            bid = new Bid(UsersRepo.getInstance().getLoginUser(), project, Integer.valueOf(bidAmount));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (DupEndorse dupEndorse) {
+            dupEndorse.printStackTrace();
+        }
+        if(!bid.isValid()){
                 response.setStatus(400, "more than project budget");
             }
             else {
                 GetRepo.print("bid user = " + bid.getBiddingUser().getLastName());
+            try {
                 project.addBid(bid);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            try {
                 UsersRepo.getInstance().getLoginUser().addBid(bid);
-                response.setStatus(200);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } catch (DupEndorse dupEndorse) {
+                dupEndorse.printStackTrace();
+            }
+            response.setStatus(200);
 
             }
     }

@@ -1,5 +1,9 @@
 package controller;
 
+import Scheduler.Scheduler;
+import dataLayer.dataMappers.ProjectMapper.BidMapper;
+import dataLayer.dataMappers.SkillMapper.SkillMapper;
+import model.Exceptions.DupEndorse;
 import model.Repo.GetRepo;
 import model.Repo.ProjectsRepo;
 import model.Repo.SkillsRepo;
@@ -31,16 +35,19 @@ public class homeServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             GetRepo.print("homeServlet");
+            new SkillMapper();
+            new BidMapper();
             if(!GetRepo.isSetRepo) {
-                GetRepo.setRepo();
+                Scheduler scheduler = new Scheduler();
                 UsersRepo.getInstance().setLoginUser("1");//ali sharifzadeh
             }
             request.setAttribute("user", UsersRepo.getInstance().getLoginUser());
             request.getRequestDispatcher("jsp/homePage.jsp").forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();
+        } catch (DupEndorse dupEndorse) {
+            dupEndorse.printStackTrace();
         }
-
 
 
     }

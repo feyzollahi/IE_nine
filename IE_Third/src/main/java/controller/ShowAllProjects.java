@@ -19,15 +19,15 @@ public class ShowAllProjects extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        ArrayList<Project> matchingProjects = null;
-        try {
-            System.out.println("salam");
-            matchingProjects = ProjectsRepo.getInstance().getProjectFilteredByUserSkills(UsersRepo.getInstance().getLoginUser());
-            request.setAttribute("projects", matchingProjects);
-            request.getRequestDispatcher("home/oldHome.html").forward(request, response);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        ArrayList<Project> matchingProjects = null;
+//        try {
+//            System.out.println("salam");
+//            matchingProjects = ProjectsRepo.getInstance().getProjectFilteredByUserSkills(UsersRepo.getInstance().getLoginUser());
+//            request.setAttribute("projects", matchingProjects);
+//            request.getRequestDispatcher("home/oldHome.html").forward(request, response);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
 
     }
 }

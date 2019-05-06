@@ -1,6 +1,10 @@
 package model.Repo;
 
 
+import dataLayer.dataMappers.ProjectMapper.AdvancedProjectMapper;
+import dataLayer.dataMappers.UserMapper.AdvancedUserMapper;
+import dataLayer.dataMappers.UserMapper.UserMapper;
+import model.Exceptions.DupEndorse;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -30,14 +34,18 @@ public class GetRepo {
         Object object = parser.parse(result.toString());
         return object;
     }
-    public static void setRepo() throws Exception {
+    public static void setRepo() throws Exception, DupEndorse {
+//        UserMapper userMapper = new UserMapper();
+//        AdvancedUserMapper advancedUserMapper = new AdvancedUserMapper();
+//        AdvancedProjectMapper advancedProjectMapper = new AdvancedProjectMapper();
+//        return;
         GetRepo.isSetRepo = true;
         ProjectsRepo projectsRepo = ProjectsRepo.getInstance();
         projectsRepo.setRepo();
         SkillsRepo skillsRepo = SkillsRepo.getInstance();
         skillsRepo.setRepo();
         UsersRepo usersRepo = UsersRepo.getInstance();
-        usersRepo.setRepo();
+        usersRepo.setRepoInDataBase();
     }
     public static JSONObject mergeJSONObjects(JSONObject json1, JSONObject json2) {
         JSONObject mergedJSON = new JSONObject();

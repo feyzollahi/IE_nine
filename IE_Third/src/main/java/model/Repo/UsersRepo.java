@@ -1,12 +1,17 @@
 package model.Repo;
 
+import dataLayer.dataMappers.UserMapper.AdvancedUserMapper;
+import dataLayer.dataMappers.UserMapper.UserMapper;
+import model.Exceptions.DupEndorse;
 import model.Exceptions.UserNotFound;
 import model.User.User;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class UsersRepo {
     private static final String usersRepoUrlText = "https://api.myjson.com/bins/171ppi";
@@ -30,16 +35,18 @@ public class UsersRepo {
         else
             return users.get(userId).isLogin();
     }
-    public ArrayList<User> getAllUsers(){
-        return new ArrayList<>(this.users.values());
+    public ArrayList<User> getAllUsers() throws SQLException, DupEndorse {
+        AdvancedUserMapper advancedUserMapper = new AdvancedUserMapper();
+        return new ArrayList<>(advancedUserMapper.getAllUser());
     }
     public void setLoginUser(User user){
         this.loginUser = user;
     }
-    public void setLoginUser(String userId) throws UserNotFound {
+    public void setLoginUser(String userId) throws UserNotFound, SQLException, DupEndorse {
         User user = this.getUserById(userId);
         user.login();
-        this.loginUser = user;
+        UserMapper um = new UserMapper();
+        um.setLogin(user.getId());
     }
     public void logOutAlUsers(){
         if(loginUser != null) {
@@ -47,27 +54,38 @@ public class UsersRepo {
             loginUser = null;
         }
     }
-    public User getLoginUser(){
-        return loginUser;
+    public User getLoginUser() throws SQLException, DupEndorse {
+        UserMapper um = new UserMapper();
+        AdvancedUserMapper advancedUserMapper = new AdvancedUserMapper();
+        advancedUserMapper.setUserSkillContain(true);
+        User user = advancedUserMapper.getUserWithId(um.findLoginUsers().get(0).getId());
+        return user;
     }
-    public User tempGetLoginUser() throws UserNotFound {
+    public User tempGetLoginUser() throws UserNotFound, SQLException, DupEndorse {
         return getUserById("1");
     }
     public void addUser(User user){
         users.put(user.getId(), user);
     }
-    public User getUserById(String id) throws UserNotFound {
-        User user = this.users.get(id);
+    public User getUserById(String id) throws UserNotFound, SQLException, DupEndorse {
+        AdvancedUserMapper advancedUserMapper = new AdvancedUserMapper();
+        advancedUserMapper.setBidContain(true);
+        advancedUserMapper.setUserSkillContain(true);
+        User user = advancedUserMapper.getUserWithId(id);
         if(user == null)
             throw new UserNotFound();
-        return users.get(id);
+        return user;
     }
-    public void setRepo() throws Exception {
+    public void setRepoInDataBase() throws Exception, DupEndorse {
         UsersRepo usersRepo = UsersRepo.getInstance();
 
         JSONArray arr = (JSONArray) GetRepo.getHTML(usersRepoUrlText);
         for(Object obj: arr){
-            this.addUser(new User((JSONObject) obj));
+            User user = new User((JSONObject) obj);
+            AdvancedUserMapper advancedUserMapper = new AdvancedUserMapper();
+            advancedUserMapper.setUserSkillContain(true);
+            List<User> users = advancedUserMapper.getAllUser();
+            advancedUserMapper.setUser(user);
         }
     }
 }

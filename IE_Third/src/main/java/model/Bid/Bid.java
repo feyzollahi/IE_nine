@@ -1,5 +1,9 @@
 package model.Bid;
 
+import dataLayer.dataMappers.ProjectMapper.ProjectMapper;
+import dataLayer.dataMappers.UserMapper.UserMapper;
+import dataLayer.dataMappers.UserMapper.UserSkillMapper;
+import model.Exceptions.DupEndorse;
 import model.Exceptions.ProjectNotFound;
 import model.Exceptions.UserNotFound;
 import model.Project.Project;
@@ -8,8 +12,10 @@ import model.Repo.UsersRepo;
 import model.User.User;
 import org.json.simple.JSONObject;
 
+import java.sql.SQLException;
+
 public class Bid {
-    public Bid(JSONObject jsonObject) throws Exception {
+    public Bid(JSONObject jsonObject) throws Exception, DupEndorse {
         String userId = (String) jsonObject.get("userId");
         UsersRepo usersRepo = UsersRepo.getInstance();
         User user = usersRepo.getUserById(userId);
@@ -31,6 +37,17 @@ public class Bid {
         this.project = project;
         this.bidAmount = bidAmount;
     }
+    public Bid(String userId, String projectId, int bidAmount){
+        this.userId = userId;
+        this.projectId = projectId;
+        this.bidAmount = bidAmount;
+    }
+    public void setUserAndProjectFromDB() throws SQLException {
+        UserMapper userMapper = new UserMapper();
+        ProjectMapper projectMapper = new ProjectMapper();
+        this.biddingUser = userMapper.find(this.userId);
+        this.project = projectMapper.find(this.projectId);
+    }
     public boolean isValid(){
         if(project.getBudget() < bidAmount)
             return false;
@@ -39,6 +56,16 @@ public class Bid {
     private User biddingUser;
     private int bidAmount;
     private Project project;
+    private String userId;
+    private String projectId;
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public String getProjectId() {
+        return projectId;
+    }
 
     public User getBiddingUser() {
         return biddingUser;

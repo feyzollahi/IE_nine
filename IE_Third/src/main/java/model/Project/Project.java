@@ -1,5 +1,6 @@
 package model.Project;
 
+import dataLayer.dataMappers.ProjectMapper.BidMapper;
 import model.Bid.Bid;
 import model.Exceptions.BidNotFound;
 import model.Skill.ProjectSkill;
@@ -7,6 +8,7 @@ import model.User.User;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -24,7 +26,20 @@ public class Project {
         this.id = (String) project_data.get("id");
         this.deadline = (Long) project_data.get("deadline");
         this.description = (String) project_data.get("description");
+        this.creationDate = (Long) project_data.get("creationDate");
         this.bids = new HashMap<String, Bid>();
+    }
+    public Project(String projectId, String title, String imageUrlText, long budget,
+                   long deadline, long creationDate, String description){
+        this.id = projectId;
+        this.title = title;
+        this.imageUrlText = imageUrlText;
+        this.budget = budget;
+        this.deadline = deadline;
+        this.creationDate = creationDate;
+        this.description = description;
+        this.bids = new HashMap<String, Bid>();
+        this.skills = new HashMap<String, ProjectSkill>();
     }
 
     private HashMap<String, ProjectSkill> skills;
@@ -33,9 +48,12 @@ public class Project {
     private String id;
     private String description;
     private long deadline;
+    private long creationDate;
     private HashMap<String, Bid> bids;
     private User winnerUser;
     private String imageUrlText;
+
+
 
     public boolean isUserAppropriateForProject(User user){
 
@@ -47,6 +65,13 @@ public class Project {
         }
         return true;
     }
+    public HashMap<String, Bid> getBids() {
+        return bids;
+    }
+
+    public void setBids(HashMap<String, Bid> bids) {
+        this.bids = bids;
+    }
     public String getImageUrlText() {
         return imageUrlText;
     }
@@ -55,8 +80,10 @@ public class Project {
         this.imageUrlText = imageUrlText;
     }
 
-    public void addBid(Bid bid) {
+    public void addBid(Bid bid) throws SQLException {
         this.bids.put(bid.getBiddingUser().getId(), bid);
+        BidMapper bidMapper = new BidMapper();
+        bidMapper.insertObjectToDB(bid);
     }
 
     public Bid getBid(String userId) throws BidNotFound {
@@ -107,6 +134,14 @@ public class Project {
 
     public void setDeadline(long deadline) {
         this.deadline = deadline;
+    }
+
+    public long getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(long creationDate) {
+        this.creationDate = creationDate;
     }
 
     public String getTitle() {

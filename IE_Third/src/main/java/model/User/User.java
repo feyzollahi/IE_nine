@@ -1,7 +1,13 @@
 package model.User;
 
 
+import dataLayer.dataMappers.ProjectMapper.BidMapper;
+import dataLayer.dataMappers.UserMapper.AdvancedUserMapper;
+import dataLayer.dataMappers.UserMapper.EndorseInfo;
+import dataLayer.dataMappers.UserMapper.EndorseMapper;
+import dataLayer.dataMappers.UserMapper.UserSkillMapper;
 import model.Bid.Bid;
+import model.Exceptions.DupEndorse;
 import model.Exceptions.SkillNotFound;
 import model.Exceptions.UserSkillNotFound;
 import model.Project.Project;
@@ -10,6 +16,7 @@ import model.Skill.UserSkill;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 
 public class User {
@@ -20,7 +27,6 @@ public class User {
         this.lastName = (String) jsonObject.get("lastName");
         this.id = (String) jsonObject.get("id");
         this.jobTitle = (String) jsonObject.get("jobTitle");
-        this.bio = (String) jsonObject.get("bio");
         this.skills = new HashMap<String, UserSkill>();
         this.bids = new HashMap<String, Bid>();
         JSONArray skills;
@@ -29,6 +35,16 @@ public class User {
             UserSkill skill = new UserSkill((JSONObject) skill1);
             this.skills.put(skill.getName(), skill);
         }
+    }
+    public User(String userId, String firstName, String lastName, String jobTitle, String bio, boolean isLogin){
+        this.isLogin = false;
+        this.bio = bio;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.id = userId;
+        this.jobTitle = jobTitle;
+        this.skills = new HashMap<String, UserSkill>();
+        this.bids = new HashMap<String, Bid>();
     }
     private boolean isLogin;
     private String bio;
@@ -96,6 +112,14 @@ public class User {
         return id;
     }
 
+    public HashMap<String, Bid> getBids() {
+        return bids;
+    }
+
+    public void setBids(HashMap<String, Bid> bids) {
+        this.bids = bids;
+    }
+
     public void setId(String id) {
         this.id = id;
     }
@@ -123,21 +147,31 @@ public class User {
     public void setSkills(HashMap<String, UserSkill> skills) {
         this.skills = skills;
     }
-    public void addBid(Bid bid){
+    public void addBid(Bid bid) throws SQLException {
         this.bids.put(bid.getProject().getId(), bid);
+        BidMapper bidMapper = new BidMapper();
+        bidMapper.insertObjectToDB(bid);
+
     }
-    public void addSkill(UserSkill skill){
+    public void addSkill(UserSkill skill) throws SQLException {
         this.skills.put(skill.getName(), skill);
+        UserSkillMapper userSkillMapper = new UserSkillMapper();
+        userSkillMapper.insertObjectToDBWithId(skill, this.id);
     }
-    public void addEndorserToSkills(String skillName, User endorser) throws UserSkillNotFound {
+    public void addEndorserToSkills(String skillName, User endorser) throws UserSkillNotFound, DupEndorse, SQLException {
         UserSkill skill = this.skills.get(skillName);
         if(skill == null)
             throw new UserSkillNotFound();
         skill.addEndorser(endorser);
+        EndorseMapper endorseMapper = new EndorseMapper();
+        EndorseInfo endorseInfo = new EndorseInfo(endorser.getId(), this.id, skillName);
+        endorseMapper.insertObjectToDB(endorseInfo);
     }
-    public void deleteSkill(String skillName) throws SkillNotFound {
+    public void deleteSkill(String skillName) throws SkillNotFound, SQLException {
         if(this.skills.get(skillName) == null)
             throw new SkillNotFound();
         this.skills.remove(skillName);
+        AdvancedUserMapper advancedUserMapper = new AdvancedUserMapper();
+        advancedUserMapper.deleteSkill(this.id, skillName);
     }
 }

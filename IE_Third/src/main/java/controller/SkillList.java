@@ -1,6 +1,7 @@
 package controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import model.Exceptions.DupEndorse;
 import model.Repo.SkillsRepo;
 import model.Repo.UsersRepo;
 import model.Skill.Skill;
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 @WebServlet("/skillList")
@@ -22,8 +24,20 @@ public class SkillList extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        ArrayList<Skill> skills = SkillsRepo.getInstance().getSkills();
-        User user = UsersRepo.getInstance().getLoginUser();
+        ArrayList<Skill> skills = null;
+        try {
+            skills = SkillsRepo.getInstance().getSkills();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        User user = null;
+        try {
+            user = UsersRepo.getInstance().getLoginUser();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (DupEndorse dupEndorse) {
+            dupEndorse.printStackTrace();
+        }
         ArrayList<Skill> loginUserHasNotSkills = new ArrayList<>();
         for(Skill skill: skills){
             if(!user.hasSkill(skill.getName())){

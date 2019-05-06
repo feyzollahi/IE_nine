@@ -7,6 +7,10 @@ public class ProjectSkill extends Skill {
         this.setName((String) skill.get("name"));
         this.point = (Long) skill.get("point");
     }
+    public ProjectSkill(String skillName, long point){
+        this.point = point;
+        this.setName(skillName);
+    }
     private long point;
 
     public long getPoint() {

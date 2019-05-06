@@ -8,14 +8,15 @@ import java.util.ArrayList;
 
 public class ProjectSummaryData {
     String id, title, description, imageUrlText;
-    long budget, deadline;
+    long budget, deadline, creationDate;
     ArrayList<Skill> skills = new ArrayList<Skill>();
     public ProjectSummaryData(String id, String title, String description, String imageUrlText, long deadline,
-                              long budget, ArrayList<ProjectSkill> pSkills){
+                              long creationDate, long budget, ArrayList<ProjectSkill> pSkills){
         this.id = id;
         this.title = title;
         this.budget = budget;
         this.deadline = deadline;
+        this.creationDate = creationDate;
         this.description = description;
         this.imageUrlText = imageUrlText;
         GetRepo.print(imageUrlText);
@@ -61,6 +62,14 @@ public class ProjectSummaryData {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public long getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(long creationDate) {
+        this.creationDate = creationDate;
     }
 
     public long getDeadline() {

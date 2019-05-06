@@ -1,6 +1,7 @@
 package controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import model.Exceptions.DupEndorse;
 import model.Exceptions.UserNotFound;
 import model.Project.Project;
 import model.Repo.GetRepo;
@@ -18,7 +19,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 @WebServlet("/showSpecifiedUserCtrl")
 public class ShowSpecifiedUserCtrl extends HttpServlet {
@@ -33,14 +36,30 @@ public class ShowSpecifiedUserCtrl extends HttpServlet {
         }
         GetRepo.print("showSpecifiedUserCtrl");
         String userId = request.getParameter("userId");
+        if(userId.equals("profile")){
+            try {
+                userId = UsersRepo.getInstance().getLoginUser().getId();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } catch (DupEndorse dupEndorse) {
+                dupEndorse.printStackTrace();
+            }
+        }
+        GetRepo.print(userId);
         try {
             User user = UsersRepo.getInstance().getUserById(userId);
             response.setHeader("Content-Type", "application/json; charset=UTF-8");
             UserCompleteData userCompleteData = new UserCompleteData(user.getId(), user.getBio(), user.getFirstName()
-            , user.getLastName(), user.getJobTitle());
+                    , user.getLastName(), user.getJobTitle());
             userCompleteData.setuSkills(new ArrayList<UserSkill>(user.getSkills().values()));
             response.setStatus(200);
-
+            ArrayList<UserSkill> listSkills = new ArrayList<UserSkill>(user.getSkills().values());
+            GetRepo.print(listSkills);
+//            userCompleteData.isLoginUserEndorsed = false;
+            GetRepo.print("id is" + user.getId());
+            for (int i = 0; i < listSkills.size(); i++){
+                listSkills.get(i).isLoginUserEndorsed = listSkills.get(i).isEndorser(UsersRepo.getInstance().getLoginUser().getId());
+            }
             ObjectMapper om = new ObjectMapper();
             String json = om.writeValueAsString(userCompleteData);
             GetRepo.print(json);
@@ -58,6 +77,10 @@ public class ShowSpecifiedUserCtrl extends HttpServlet {
         } catch (UserNotFound userNotFound) {
             userNotFound.printStackTrace();
             response.setStatus(404);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (DupEndorse dupEndorse) {
+            dupEndorse.printStackTrace();
         }
     }
 }

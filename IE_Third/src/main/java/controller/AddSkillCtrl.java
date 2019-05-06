@@ -19,12 +19,12 @@ public class AddSkillCtrl extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        GetRepo.print("addSkillCtrl");
-        String skillName = request.getParameter("skillName");
-        User user = UsersRepo.getInstance().getLoginUser();
-        user.addSkill(new UserSkill(skillName));
-        request.setAttribute("addMsg", "skill " + "\"" + skillName + "\"" + " was added to user " + user.getFirstName()
-                + " " + user.getLastName() + " skills list");
-        request.getRequestDispatcher("jsp/userOwnPage.jsp").forward(request, response);
+//        GetRepo.print("addSkillCtrl");
+//        String skillName = request.getParameter("skillName");
+//        User user = UsersRepo.getInstance().getLoginUser();
+//        user.addSkill(new UserSkill(skillName));
+//        request.setAttribute("addMsg", "skill " + "\"" + skillName + "\"" + " was added to user " + user.getFirstName()
+//                + " " + user.getLastName() + " skills list");
+//        request.getRequestDispatcher("jsp/userOwnPage.jsp").forward(request, response);
     }
 }

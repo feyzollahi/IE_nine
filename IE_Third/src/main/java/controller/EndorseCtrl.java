@@ -1,5 +1,6 @@
 package controller;
 
+import model.Exceptions.DupEndorse;
 import model.Exceptions.UserNotFound;
 import model.Exceptions.UserSkillNotFound;
 import model.Repo.GetRepo;
@@ -16,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.sql.SQLException;
 
 @WebServlet("/endorseCtrl")
 public class EndorseCtrl extends HttpServlet {
@@ -38,35 +40,46 @@ public class EndorseCtrl extends HttpServlet {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        User loginUser = UsersRepo.getInstance().getLoginUser();
+        User loginUser = null;
+        try {
+            loginUser = UsersRepo.getInstance().getLoginUser();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (DupEndorse dupEndorse) {
+            dupEndorse.printStackTrace();
+        }
         User user = null;
         try {
             user = UsersRepo.getInstance().getUserById(userId);
             user.addEndorserToSkills(skillName, loginUser);
             response.setStatus(200);
-        } catch (UserNotFound | UserSkillNotFound userNotFound) {
+        } catch (UserNotFound | UserSkillNotFound | DupEndorse userNotFound) {
             userNotFound.printStackTrace();
             GetRepo.print("Exception EndorserCtrl");
             response.setStatus(404);
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String skillName = request.getParameter("skillName");
-        String userId = request.getParameter("userId");
-        User loginUser = UsersRepo.getInstance().getLoginUser();
-        User user = null;
-        try {
-            user = UsersRepo.getInstance().getUserById(userId);
-            user.addEndorserToSkills(skillName, loginUser);
-        } catch (UserNotFound | UserSkillNotFound userNotFound) {
-            userNotFound.printStackTrace();
-            GetRepo.print("Exception EndorserCtrl");
-        }
-
-        request.setAttribute("endorseMsg","skill " + "\"" + skillName + "\"" + " of user " + user.getFirstName()
-                + " " + user.getLastName() + " was endoresed by user " + loginUser.getFirstName()
-                + " " + loginUser.getLastName());
-        request.getRequestDispatcher("jsp/userGuestPage.jsp").forward(request, response);
+//        String skillName = request.getParameter("skillName");
+//        String userId = request.getParameter("userId");
+//        User loginUser = UsersRepo.getInstance().getLoginUser();
+//        User user = null;
+//        try {
+//            user = UsersRepo.getInstance().getUserById(userId);
+//            user.addEndorserToSkills(skillName, loginUser);
+//        } catch (UserNotFound | UserSkillNotFound | DupEndorse userNotFound) {
+//            userNotFound.printStackTrace();
+//            GetRepo.print("Exception EndorserCtrl");
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//
+//        request.setAttribute("endorseMsg","skill " + "\"" + skillName + "\"" + " of user " + user.getFirstName()
+//                + " " + user.getLastName() + " was endoresed by user " + loginUser.getFirstName()
+//                + " " + loginUser.getLastName());
+//        request.getRequestDispatcher("jsp/userGuestPage.jsp").forward(request, response);
     }
 }

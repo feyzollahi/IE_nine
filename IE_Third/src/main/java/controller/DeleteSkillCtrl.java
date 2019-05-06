@@ -1,5 +1,6 @@
 package controller;
 
+import model.Exceptions.DupEndorse;
 import model.Exceptions.SkillNotFound;
 import model.Repo.GetRepo;
 import model.Repo.UsersRepo;
@@ -12,12 +13,20 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 @WebServlet("/deleteSkill")
 public class DeleteSkillCtrl extends HttpServlet {
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        User user = UsersRepo.getInstance().getLoginUser();
+        User user = null;
+        try {
+            user = UsersRepo.getInstance().getLoginUser();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (DupEndorse dupEndorse) {
+            dupEndorse.printStackTrace();
+        }
         String skillName = request.getParameter("userSkill");
         System.out.println("skillName = " + skillName);
         ArrayList<UserSkill> uskills = new ArrayList<>(user.getSkills().values());
@@ -30,6 +39,8 @@ public class DeleteSkillCtrl extends HttpServlet {
         } catch (SkillNotFound skillNotFound) {
             skillNotFound.printStackTrace();
             response.setStatus(404);
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
     }
@@ -39,17 +50,17 @@ public class DeleteSkillCtrl extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        GetRepo.print("deleteSkill");
-        User user = UsersRepo.getInstance().getLoginUser();
-        String skillName = request.getParameter("userSkill");
-        try {
-            user.deleteSkill(skillName);
-        } catch (SkillNotFound skillNotFound) {
-            skillNotFound.printStackTrace();
-        }
-        request.setAttribute("deleteMsg","skill " + "\"" + skillName + "\"" + " was removed from user " + user.getFirstName()
-        + " " + user.getLastName() + " skills list");
-        request.getRequestDispatcher("jsp/userOwnPage.jsp").forward(request, response);
+//        GetRepo.print("deleteSkill");
+//        User user = UsersRepo.getInstance().getLoginUser();
+//        String skillName = request.getParameter("userSkill");
+//        try {
+//            user.deleteSkill(skillName);
+//        } catch (SkillNotFound skillNotFound) {
+//            skillNotFound.printStackTrace();
+//        }
+//        request.setAttribute("deleteMsg","skill " + "\"" + skillName + "\"" + " was removed from user " + user.getFirstName()
+//        + " " + user.getLastName() + " skills list");
+//        request.getRequestDispatcher("jsp/userOwnPage.jsp").forward(request, response);
 
     }
 }

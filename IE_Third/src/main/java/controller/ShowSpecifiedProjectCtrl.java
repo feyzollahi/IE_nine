@@ -1,6 +1,7 @@
 package controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import model.Exceptions.DupEndorse;
 import model.Exceptions.ProjectNotFound;
 import model.Project.Project;
 import model.Repo.GetRepo;
@@ -19,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 
 @WebServlet("/showSpecifiedProjectCtrl")
 public class ShowSpecifiedProjectCtrl extends HttpServlet {
@@ -37,6 +39,10 @@ public class ShowSpecifiedProjectCtrl extends HttpServlet {
         } catch (ProjectNotFound projectNotFound) {
             projectNotFound.printStackTrace();
             exist = false;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (DupEndorse dupEndorse) {
+            dupEndorse.printStackTrace();
         }
         request.removeAttribute("projects");
         if(!exist){
@@ -45,9 +51,7 @@ public class ShowSpecifiedProjectCtrl extends HttpServlet {
         else {
             if (isLegal) {
                 try {
-                    request.setAttribute("project", ProjectsRepo.getInstance().getProjectById(projectId));
-                    request.setAttribute("userId", UsersRepo.getInstance().getLoginUser().getId());
-                    GetRepo.print("specifiedPro send");
+
                     response.setHeader("Content-Type", "application/json; charset=UTF-8");
                     Project project = ProjectsRepo.getInstance().getProjectById(projectId);
 
@@ -75,10 +79,21 @@ public class ShowSpecifiedProjectCtrl extends HttpServlet {
                 } catch (ProjectNotFound projectNotFound) {
                     projectNotFound.printStackTrace();
                     response.setStatus(404);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                } catch (DupEndorse dupEndorse) {
+                    dupEndorse.printStackTrace();
                 }
             } else {
                 response.setStatus(403);
-                User user = UsersRepo.getInstance().getLoginUser();
+                User user = null;
+                try {
+                    user = UsersRepo.getInstance().getLoginUser();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                } catch (DupEndorse dupEndorse) {
+                    dupEndorse.printStackTrace();
+                }
                 request.setAttribute("forbiddenMsg", "Sorry!\n " + user.getFirstName() + " " + user.getLastName()
                         + " can not see the project! because he/she does not have enough skills for it.");
 //            request.getRequestDispatcher("specifiedProject/specifiedProject.jsp").forward(request, response);
