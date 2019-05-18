@@ -14,6 +14,8 @@ import java.util.HashMap;
 import java.util.List;
 
 public class UsersRepo {
+    private static final String usersRepoUrlText3 = "https://api.jsonbin.io/b/5cdd4f09dbffad51f8aa9d06";
+    private static final String usersRepoUrlText2 = "http://api.myjson.com/bins/16xj3u";
     private static final String usersRepoUrlText = "https://api.myjson.com/bins/171ppi";
     private static UsersRepo singleUsersRepo = null;
     private UsersRepo(){
@@ -71,6 +73,7 @@ public class UsersRepo {
         AdvancedUserMapper advancedUserMapper = new AdvancedUserMapper();
         advancedUserMapper.setBidContain(true);
         advancedUserMapper.setUserSkillContain(true);
+        System.out.println("id = " + id);
         User user = advancedUserMapper.getUserWithId(id);
         if(user == null)
             throw new UserNotFound();
@@ -79,13 +82,12 @@ public class UsersRepo {
     public void setRepoInDataBase() throws Exception, DupEndorse {
         UsersRepo usersRepo = UsersRepo.getInstance();
 
-        JSONArray arr = (JSONArray) GetRepo.getHTML(usersRepoUrlText);
+        JSONArray arr = (JSONArray) GetRepo.getHTML(usersRepoUrlText2);
         for(Object obj: arr){
             User user = new User((JSONObject) obj);
             AdvancedUserMapper advancedUserMapper = new AdvancedUserMapper();
             advancedUserMapper.setUserSkillContain(true);
-            List<User> users = advancedUserMapper.getAllUser();
-            advancedUserMapper.setUser(user);
+            advancedUserMapper.setUser(user, (Long)((JSONObject) obj).get("passWordHash"));
         }
     }
 }

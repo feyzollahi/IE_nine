@@ -51,9 +51,13 @@ public class AdvancedUserMapper {
         }
         return users;
     }
-
+    public User getUserWithUserName(String userName) throws SQLException {
+        User user = userMapper.findWithUserName(userName);
+        return userMapper.find(user.getId());
+    }
     public User getUserWithId(String userId) throws SQLException, DupEndorse {
         User user = userMapper.find(userId);
+
         if(bidContain) {
             List<Bid> bids = new ArrayList<>();
             bids = bidMapper.findBidWithUserId(userId);
@@ -88,8 +92,11 @@ public class AdvancedUserMapper {
         usm.deleteUserSkill(userId, skillName);
         em.deleteEndorseWithSkill(userId, skillName);
     }
-    public void setUser(User user) throws SQLException {
+    public void setUser(User user, long passWordHash) throws SQLException {
+        System.out.println(user.getUserName());
+        System.out.println("userName");
         userMapper.insertObjectToDB(user);
+        userMapper.setPassWordHash(user.getId(), (int)passWordHash);
         if(!user.getBids().isEmpty()){
             for(Bid bid: user.getBids().values()){
                 bidMapper.insertObjectToDB(bid);

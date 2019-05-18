@@ -17,7 +17,7 @@ import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-@WebServlet("/skillList")
+@WebServlet(name = "skillList", urlPatterns = "/skillList")
 public class SkillList extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -31,13 +31,7 @@ public class SkillList extends HttpServlet {
             e.printStackTrace();
         }
         User user = null;
-        try {
-            user = UsersRepo.getInstance().getLoginUser();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (DupEndorse dupEndorse) {
-            dupEndorse.printStackTrace();
-        }
+        user = (User) request.getAttribute("user");
         ArrayList<Skill> loginUserHasNotSkills = new ArrayList<>();
         for(Skill skill: skills){
             if(!user.hasSkill(skill.getName())){

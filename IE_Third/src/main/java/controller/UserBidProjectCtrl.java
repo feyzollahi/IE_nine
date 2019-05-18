@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 
-@WebServlet("/userBidProjectCtrl")
+@WebServlet(name = "userBidProjectCtrl",urlPatterns = "/userBidProjectCtrl")
 public class UserBidProjectCtrl extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -44,13 +44,7 @@ public class UserBidProjectCtrl extends HttpServlet {
         }
 
         Bid bid = null;
-        try {
-            bid = new Bid(UsersRepo.getInstance().getLoginUser(), project, Integer.valueOf(bidAmount));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (DupEndorse dupEndorse) {
-            dupEndorse.printStackTrace();
-        }
+        bid = new Bid((User) request.getAttribute("user"), project, Integer.valueOf(bidAmount));
         if(!bid.isValid()){
                 response.setStatus(400, "more than project budget");
             }
@@ -62,11 +56,9 @@ public class UserBidProjectCtrl extends HttpServlet {
                 e.printStackTrace();
             }
             try {
-                UsersRepo.getInstance().getLoginUser().addBid(bid);
+                ((User)request.getAttribute("user")).addBid(bid);
             } catch (SQLException e) {
                 e.printStackTrace();
-            } catch (DupEndorse dupEndorse) {
-                dupEndorse.printStackTrace();
             }
             response.setStatus(200);
 

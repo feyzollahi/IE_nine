@@ -16,7 +16,7 @@ import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-@WebServlet("/showAllUsersCtrl")
+@WebServlet(name = "showAllUsersCtrl", urlPatterns = "/showAllUsersCtrl")
 public class ShowAllUsersCtrl extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -34,15 +34,9 @@ public class ShowAllUsersCtrl extends HttpServlet {
 
         ArrayList<UserSummaryData> allUSD = new ArrayList<>();
         for(User user: users) {
-            try {
-                if(user.getId() == UsersRepo.getInstance().getLoginUser().getId()){
-                    users.remove(user);
-                    break;
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            } catch (DupEndorse dupEndorse) {
-                dupEndorse.printStackTrace();
+            if(user.getId() == ((User) request.getAttribute("user")).getId() ){
+                users.remove(user);
+                break;
             }
         }
         for(User user: users){
@@ -56,8 +50,5 @@ public class ShowAllUsersCtrl extends HttpServlet {
         writer.print(json);
         response.setStatus(200);
         writer.flush();
-//        request.setAttribute("users", users);
-//        request.setAttribute("loginUser", UsersRepo.getInstance().getLoginUser());
-//        request.getRequestDispatcher("jsp/showAllUsers.jsp").forward(request, response);
     }
 }

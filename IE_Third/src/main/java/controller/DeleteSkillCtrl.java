@@ -16,17 +16,11 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-@WebServlet("/deleteSkill")
+@WebServlet(name = "deleteSkill",urlPatterns = {"/deleteSkill"})
 public class DeleteSkillCtrl extends HttpServlet {
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User user = null;
-        try {
-            user = UsersRepo.getInstance().getLoginUser();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (DupEndorse dupEndorse) {
-            dupEndorse.printStackTrace();
-        }
+        user = (User) request.getAttribute("user");
         String skillName = request.getParameter("userSkill");
         System.out.println("skillName = " + skillName);
         ArrayList<UserSkill> uskills = new ArrayList<>(user.getSkills().values());

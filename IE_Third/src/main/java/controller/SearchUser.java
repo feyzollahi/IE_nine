@@ -17,7 +17,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-@WebServlet("/searchUser")
+@WebServlet(name = "searchUser", urlPatterns = "/searchUser")
 public class SearchUser extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -36,9 +36,10 @@ public class SearchUser extends HttpServlet {
         GetRepo.print("2");
         try {
             users = userMapper.findWithFirstName(searchVal);
+            User loginUser = (User) request.getAttribute("user");
             GetRepo.print("2.2");
             for(User user:userMapper.findWithLastName(searchVal)){
-                if(!users.contains(user)){
+                if(!users.contains(user) && !user.getId().equals(loginUser.getId())){
                     users.add(user);
                 }
             }

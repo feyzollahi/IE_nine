@@ -18,7 +18,7 @@ import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-@WebServlet("/projectlist")
+@WebServlet(name = "projectlist", urlPatterns = "/projectlist")
 public class ProjectList extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -35,13 +35,7 @@ public class ProjectList extends HttpServlet {
             e.printStackTrace();
         }
         User loginUser = null;
-        try {
-            loginUser = UsersRepo.getInstance().getLoginUser();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (DupEndorse dupEndorse) {
-            dupEndorse.printStackTrace();
-        }
+        loginUser = (User) request.getAttribute("user");
         ArrayList<Project> filterProjects = new ArrayList<>();
         for(Project project: projects){
             if(project.isUserAppropriateForProject(loginUser)){

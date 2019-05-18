@@ -29,6 +29,8 @@ public class User {
         this.jobTitle = (String) jsonObject.get("jobTitle");
         this.skills = new HashMap<String, UserSkill>();
         this.bids = new HashMap<String, Bid>();
+        this.userName = (String) jsonObject.get("userName");
+        this.profilePictureURLText = (String) jsonObject.get("imageUrlText");
         JSONArray skills;
         skills = (JSONArray) jsonObject.get("skills");
         for (Object skill1 : skills) {
@@ -36,13 +38,16 @@ public class User {
             this.skills.put(skill.getName(), skill);
         }
     }
-    public User(String userId, String firstName, String lastName, String jobTitle, String bio, boolean isLogin){
-        this.isLogin = false;
+    public User(String userId, String firstName, String lastName, String userName,
+                 String jobTitle, String bio, String imageUrlText, boolean isLogin){
+        this.isLogin = isLogin;
         this.bio = bio;
         this.firstName = firstName;
         this.lastName = lastName;
         this.id = userId;
+        this.userName = userName;
         this.jobTitle = jobTitle;
+        this.profilePictureURLText = imageUrlText;
         this.skills = new HashMap<String, UserSkill>();
         this.bids = new HashMap<String, Bid>();
     }
@@ -50,6 +55,7 @@ public class User {
     private String bio;
     private String firstName;
     private String lastName;
+    private String userName;
     private String id;
     private String jobTitle;
     private String profilePictureURLText;
@@ -139,6 +145,16 @@ public class User {
     public void setProfilePictureURLText(String profilePictureURLText) {
         this.profilePictureURLText = profilePictureURLText;
     }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+
 
     public HashMap<String, UserSkill> getSkills() {
         return skills;

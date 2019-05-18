@@ -23,7 +23,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-@WebServlet("/showSpecifiedUserCtrl")
+@WebServlet(name = "showSpecifiedUserCtrl", urlPatterns = "/showSpecifiedUserCtrl")
 public class ShowSpecifiedUserCtrl extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -36,9 +36,15 @@ public class ShowSpecifiedUserCtrl extends HttpServlet {
         }
         GetRepo.print("showSpecifiedUserCtrl");
         String userId = request.getParameter("userId");
+        User user = null;
         if(userId.equals("profile")){
+            user = (User) request.getAttribute("user");
+        }
+        else{
             try {
-                userId = UsersRepo.getInstance().getLoginUser().getId();
+                user = UsersRepo.getInstance().getUserById(userId);
+            } catch (UserNotFound userNotFound) {
+                userNotFound.printStackTrace();
             } catch (SQLException e) {
                 e.printStackTrace();
             } catch (DupEndorse dupEndorse) {
@@ -46,41 +52,30 @@ public class ShowSpecifiedUserCtrl extends HttpServlet {
             }
         }
         GetRepo.print(userId);
-        try {
-            User user = UsersRepo.getInstance().getUserById(userId);
-            response.setHeader("Content-Type", "application/json; charset=UTF-8");
-            UserCompleteData userCompleteData = new UserCompleteData(user.getId(), user.getBio(), user.getFirstName()
-                    , user.getLastName(), user.getJobTitle());
-            userCompleteData.setuSkills(new ArrayList<UserSkill>(user.getSkills().values()));
-            response.setStatus(200);
-            ArrayList<UserSkill> listSkills = new ArrayList<UserSkill>(user.getSkills().values());
-            GetRepo.print(listSkills);
+
+        response.setHeader("Content-Type", "application/json; charset=UTF-8");
+        UserCompleteData userCompleteData = new UserCompleteData(user.getId(), user.getBio(), user.getFirstName()
+                , user.getLastName(), user.getJobTitle());
+        userCompleteData.setuSkills(new ArrayList<UserSkill>(user.getSkills().values()));
+        response.setStatus(200);
+        ArrayList<UserSkill> listSkills = new ArrayList<UserSkill>(user.getSkills().values());
+        GetRepo.print(listSkills);
 //            userCompleteData.isLoginUserEndorsed = false;
-            GetRepo.print("id is" + user.getId());
-            for (int i = 0; i < listSkills.size(); i++){
-                listSkills.get(i).isLoginUserEndorsed = listSkills.get(i).isEndorser(UsersRepo.getInstance().getLoginUser().getId());
-            }
-            ObjectMapper om = new ObjectMapper();
-            String json = om.writeValueAsString(userCompleteData);
-            GetRepo.print(json);
-            PrintWriter writer = response.getWriter();
-            writer.print(json);
-            writer.flush();
-            GetRepo.print(UsersRepo.getInstance().getLoginUser().getFirstName() + UsersRepo.getInstance().getLoginUser().getLastName() + "is login");
-            GetRepo.print("user " + user.getFirstName() + " " + user.getLastName() + " is login" + user.isLogin());
+        GetRepo.print("id is" + user.getId());
+        for (int i = 0; i < listSkills.size(); i++){
+            listSkills.get(i).isLoginUserEndorsed = listSkills.get(i).isEndorser(((User) request.getAttribute("user")).getId());
+        }
+        ObjectMapper om = new ObjectMapper();
+        String json = om.writeValueAsString(userCompleteData);
+        GetRepo.print(json);
+        PrintWriter writer = response.getWriter();
+        writer.print(json);
+        writer.flush();
 //            if(user.isLogin()){
 //                request.getRequestDispatcher("jsp/userOwnPage.jsp").forward(request, response);
 //            }
 //            else{
 //                request.getRequestDispatcher("jsp/userGuestPage.jsp").forward(request, response);
 //            }
-        } catch (UserNotFound userNotFound) {
-            userNotFound.printStackTrace();
-            response.setStatus(404);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (DupEndorse dupEndorse) {
-            dupEndorse.printStackTrace();
-        }
     }
 }

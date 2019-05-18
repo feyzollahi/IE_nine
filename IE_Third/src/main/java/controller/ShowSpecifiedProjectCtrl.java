@@ -22,7 +22,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 
-@WebServlet("/showSpecifiedProjectCtrl")
+@WebServlet(name = "showSpecifiedProjectCtrl",urlPatterns = "/showSpecifiedProjectCtrl")
 public class ShowSpecifiedProjectCtrl extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -35,14 +35,12 @@ public class ShowSpecifiedProjectCtrl extends HttpServlet {
         boolean exist = true;
         try {
             exist = ProjectsRepo.getInstance().getProjectById(projectId) != null;
-            isLegal = ProjectsRepo.getInstance().getProjectById(projectId).isUserAppropriateForProject(UsersRepo.getInstance().getLoginUser());
+            isLegal = ProjectsRepo.getInstance().getProjectById(projectId).isUserAppropriateForProject((User) request.getAttribute("user"));
         } catch (ProjectNotFound projectNotFound) {
             projectNotFound.printStackTrace();
             exist = false;
         } catch (SQLException e) {
             e.printStackTrace();
-        } catch (DupEndorse dupEndorse) {
-            dupEndorse.printStackTrace();
         }
         request.removeAttribute("projects");
         if(!exist){
@@ -67,7 +65,7 @@ public class ShowSpecifiedProjectCtrl extends HttpServlet {
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
-                    boolean isLoginUserBid = project.userHasBid(UsersRepo.getInstance().getLoginUser().getId());
+                    boolean isLoginUserBid = project.userHasBid(((User) request.getAttribute("user")).getId());
                     projectJson.put("userBid", isLoginUserBid);
                     GetRepo.print("bid : " + isLoginUserBid);
                     String finalJson = projectJson.toString();
@@ -81,22 +79,9 @@ public class ShowSpecifiedProjectCtrl extends HttpServlet {
                     response.setStatus(404);
                 } catch (SQLException e) {
                     e.printStackTrace();
-                } catch (DupEndorse dupEndorse) {
-                    dupEndorse.printStackTrace();
                 }
             } else {
                 response.setStatus(403);
-                User user = null;
-                try {
-                    user = UsersRepo.getInstance().getLoginUser();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                } catch (DupEndorse dupEndorse) {
-                    dupEndorse.printStackTrace();
-                }
-                request.setAttribute("forbiddenMsg", "Sorry!\n " + user.getFirstName() + " " + user.getLastName()
-                        + " can not see the project! because he/she does not have enough skills for it.");
-//            request.getRequestDispatcher("specifiedProject/specifiedProject.jsp").forward(request, response);
 
             }
 

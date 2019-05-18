@@ -14,19 +14,13 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 
-@WebServlet("/addSkill")
+@WebServlet(name= "addSkill", urlPatterns = "/addSkill")
 public class AddSkill extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         System.out.println("addSkill-doPost");
         System.out.println(request.getParameter("name"));
         User loginUser = null;
-        try {
-            loginUser = UsersRepo.getInstance().getLoginUser();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (DupEndorse dupEndorse) {
-            dupEndorse.printStackTrace();
-        }
+        loginUser = (User) request.getAttribute("user");
         String skillName = request.getParameter("name");
         if(loginUser.hasSkill(skillName)){
             response.setStatus(403);

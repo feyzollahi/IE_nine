@@ -19,7 +19,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.sql.SQLException;
 
-@WebServlet("/endorseCtrl")
+@WebServlet(name = "endorseCtrl", urlPatterns = "/endorseCtrl")
 public class EndorseCtrl extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
        String skillName = "", userId = "";
@@ -41,13 +41,7 @@ public class EndorseCtrl extends HttpServlet {
             e.printStackTrace();
         }
         User loginUser = null;
-        try {
-            loginUser = UsersRepo.getInstance().getLoginUser();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (DupEndorse dupEndorse) {
-            dupEndorse.printStackTrace();
-        }
+        loginUser = (User) request.getAttribute("user");
         User user = null;
         try {
             user = UsersRepo.getInstance().getUserById(userId);
