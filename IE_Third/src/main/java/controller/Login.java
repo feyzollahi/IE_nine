@@ -22,6 +22,7 @@ import java.util.concurrent.TimeUnit;
 @WebServlet(name= "login",urlPatterns = "/login")
 public class Login extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        GetRepo.print("Login Servlet");
         String userName = "", passWord = "";
         StringBuffer jb = new StringBuffer();
         String line = null;

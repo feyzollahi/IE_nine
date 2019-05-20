@@ -36,9 +36,12 @@ public class JwtFactory {
     }
     public boolean validateJwt(String jwt){
         Claims claims = decodeJwt(jwt);
-        if(claims.getExpiration().before(new Date()) && claims.get("userName") != null){
+        if(claims.getExpiration().after(new Date()) && claims.get("userName") != null){
             return true;
         }
+        System.out.println("expirationDate = " + claims.getExpiration().getTime());
+        System.out.println("now = " + new Date().getTime());
+        System.out.println("userName = " + claims.get("userName"));
         return false;
     }
 }

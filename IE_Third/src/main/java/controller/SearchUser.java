@@ -25,7 +25,7 @@ public class SearchUser extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String searchVal = request.getParameter("searchVal");
-        GetRepo.print("1");
+        GetRepo.print("searchUser");
         UserMapper userMapper = null;
         try {
              userMapper = new UserMapper();

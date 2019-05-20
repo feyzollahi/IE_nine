@@ -148,6 +148,9 @@ public class UserMapper extends Mapper<User, java.lang.String> implements IUserM
     }
     public boolean checkPassWord(String userName, String passWord) throws SQLException {
         int passWordHash = getPassWordHash(userName);
+        System.out.println("passWordHashInDB: " + passWordHash);
+        System.out.println("passWordHashUserSend: " + passWord.hashCode());
+        System.out.println("passWordUserSend: " + passWord);
         return passWordHash == passWord.hashCode();
     }
     public int getUserTableSize() throws SQLException {

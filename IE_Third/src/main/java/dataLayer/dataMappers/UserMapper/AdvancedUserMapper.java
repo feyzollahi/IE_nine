@@ -53,6 +53,7 @@ public class AdvancedUserMapper {
     }
     public User getUserWithUserName(String userName) throws SQLException {
         User user = userMapper.findWithUserName(userName);
+        System.out.println("getWithUserName: firstName: " + user.getFirstName());
         return userMapper.find(user.getId());
     }
     public User getUserWithId(String userId) throws SQLException, DupEndorse {

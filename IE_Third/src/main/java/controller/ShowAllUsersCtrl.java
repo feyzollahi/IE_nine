@@ -2,6 +2,7 @@ package controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import model.Exceptions.DupEndorse;
+import model.Repo.GetRepo;
 import model.Repo.UsersRepo;
 import model.User.User;
 import springController.UserSummaryData;
@@ -24,6 +25,7 @@ public class ShowAllUsersCtrl extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         ArrayList<User> users = null;
+        GetRepo.print("showAllUsersCtrl");
         try {
             users = UsersRepo.getInstance().getAllUsers();
         } catch (SQLException e) {
@@ -31,7 +33,7 @@ public class ShowAllUsersCtrl extends HttpServlet {
         } catch (DupEndorse dupEndorse) {
             dupEndorse.printStackTrace();
         }
-
+        System.out.println("ShowAllUserCtrl: loginUser: " + ((User) request.getAttribute("user")).getId());
         ArrayList<UserSummaryData> allUSD = new ArrayList<>();
         for(User user: users) {
             if(user.getId() == ((User) request.getAttribute("user")).getId() ){

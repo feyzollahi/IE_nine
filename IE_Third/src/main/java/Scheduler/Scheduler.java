@@ -22,5 +22,7 @@ public class Scheduler {
         // if you want to run the task immediately, set the 2nd parameter to 0
 
         time.schedule(new CustomTask(), calendar.getTime(), TimeUnit.MINUTES.toMillis(5));
+        time.schedule(new CheckWinningBidTask(), calendar.getTime(), TimeUnit.MINUTES.toMillis(1));
+
     }
 }

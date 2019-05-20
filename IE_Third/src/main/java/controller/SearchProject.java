@@ -27,7 +27,7 @@ public class SearchProject extends HttpServlet {
         String searchVal = request.getParameter("searchVal");
         response.setHeader("Content-Type", "application/json; charset=UTF-8");
         ProjectMapper projectMapper;
-        GetRepo.print("1");
+        GetRepo.print("searchProject");
         try {
             projectMapper = new ProjectMapper();
             List<Project> projects = projectMapper.findWithSearchVal(searchVal);

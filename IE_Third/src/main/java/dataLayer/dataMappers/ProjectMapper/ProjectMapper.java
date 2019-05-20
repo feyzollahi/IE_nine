@@ -151,7 +151,20 @@ public class ProjectMapper extends Mapper<Project, java.lang.String>  {
         return "insert into project (projectId, title, imageUrlText, budget, deadline, creationDate, description, winnerUserId)\n" +
                 " Select ?, ?, ?, ?, ?, ?, ?, ? Where not exists(select * from project where projectId=?)";
     }
+    protected String getUpdateWinnerUserStatement(){
+        return "update project SET project.winnerUserId = ? where projectId = ?  ";
+    }
 
+    public void setWinnerUser(String userId, String projectId) throws SQLException {
+        Connection con = DBCPDBConnectionPool.getConnection();
+        String sql = getUpdateWinnerUserStatement();
+        try (PreparedStatement st = con.prepareStatement(sql)) {
+            st.setString(1, userId);
+            st.setString(2, projectId);
+            st.executeUpdate();
+        }
+        con.close();
+    }
     @Override
     public void insertObjectToDB(Project object) throws SQLException {
         Connection con = DBCPDBConnectionPool.getConnection();
