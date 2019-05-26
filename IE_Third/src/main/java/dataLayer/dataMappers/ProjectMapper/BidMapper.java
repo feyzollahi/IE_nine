@@ -19,7 +19,7 @@ public class BidMapper extends Mapper<Bid, String> {
         st.executeUpdate("    Create Table IF NOT EXISTS\n" +
                 "                bid (\n" +
                 "                        userId VARCHAR(20) ,\n" +
-                "                        projectId VARCHAR(20),\n"+
+                "                        projectId VARCHAR(50),\n"+
                 "                        bidAmount INTEGER ,\n"+
                 "                        foreign key (userId) references user (userId) ,\n"+
                 "                        foreign key (projectId) references project (projectId),\n"+

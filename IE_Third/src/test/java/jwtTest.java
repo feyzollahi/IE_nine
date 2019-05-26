@@ -29,7 +29,10 @@ public class jwtTest {
         //Builds the JWT and serializes it to a compact, URL-safe string
         return ;
     }
-
+    @Test
+    public void testHash(){
+        System.out.println("pass".hashCode());
+    }
     public static HashMap<String, String> decodeJwt(String jwt){
         System.out.println(Jwts.parser().setSigningKey("joboonja").parseClaimsJws(jwt).getBody().getIssuer());
 //        System.out.println(Jwts.parser().parse(jwt).getBody().toString());

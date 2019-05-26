@@ -52,6 +52,7 @@ public class SignUp extends HttpServlet {
                 User user = new User(String.valueOf(userCount + 1), firstName,
                         lastName, userName, jobTitle, bio, imageUrlText, false);
                 um.insertObjectToDB(user);
+                um.setPassWordHash(user.getId(), passWord.hashCode());
                 System.out.println("signingUp finished");
 
                 response.setStatus(200);

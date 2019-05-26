@@ -17,7 +17,7 @@ public class ProjectSkillMapper extends Mapper<ProjectSkill, String> {
 //                " firstname TEXT, gpa FLOAT)");
         st.executeUpdate("    Create Table IF NOT EXISTS\n" +
                 "                projectSkill (\n" +
-                "                        projectId VARCHAR(20) ,\n" +
+                "                        projectId VARCHAR(50) ,\n" +
                 "                        skillName VARCHAR(100),\n"+
                 "                        point INT ,\n"+
                 "                         primary key (projectId, skillName),\n" +

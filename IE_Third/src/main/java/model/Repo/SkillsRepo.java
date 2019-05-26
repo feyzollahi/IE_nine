@@ -38,6 +38,7 @@ public class SkillsRepo {
     }
     public void setRepo() throws Exception {
         Object obj = GetRepo.getHTML(skillRepoUrlText);
+//        GetRepo.print("skill setRepo");
         JSONArray skillJsonArr = (JSONArray) obj;
         for(Object skillObj: skillJsonArr){
             Skill skill = new Skill((JSONObject)skillObj);

@@ -36,7 +36,7 @@ public class UserMapper extends Mapper<User, java.lang.String> implements IUserM
                 "                        isLogin BOOLEAN,\n" +
                 "                        bio VARCHAR(10000),\n" +
                 "                        jobTitle VARCHAR(300),\n" +
-                "                        imageUrlText VARCHAR(300)\n" +
+                "                        imageUrlText VARCHAR(1000)\n" +
                 "                )");
 
         st.close();
@@ -210,6 +210,7 @@ public class UserMapper extends Mapper<User, java.lang.String> implements IUserM
 
     @Override
     protected User convertResultSetToDomainModel(ResultSet rs) throws SQLException {
+        rs.next();
         if(rs.getString("userId") == null){
             return null;
         }

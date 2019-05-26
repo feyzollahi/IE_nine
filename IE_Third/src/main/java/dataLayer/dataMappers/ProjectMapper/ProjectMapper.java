@@ -30,9 +30,9 @@ public class ProjectMapper extends Mapper<Project, java.lang.String>  {
 //                " firstname TEXT, gpa FLOAT)");
         st.executeUpdate("    Create Table IF NOT EXISTS\n" +
                 "                project (\n" +
-                "                        projectId VARCHAR(20) PRIMARY KEY,\n" +
+                "                        projectId VARCHAR(50) PRIMARY KEY,\n" +
                 "                        title VARCHAR(100),\n" +
-                "                        imageUrlText VARCHAR(100),\n" +
+                "                        imageUrlText VARCHAR(1000),\n" +
                 "                        budget BIGINT,\n" +
                 "                        deadline BIGINT,\n" +
                 "                        description VARCHAR(10000),\n" +
@@ -84,6 +84,7 @@ public class ProjectMapper extends Mapper<Project, java.lang.String>  {
             ResultSet resultSet;
             try {
                 resultSet = st.executeQuery();
+                resultSet.next();
                 return convertResultSetToDomainModel(resultSet);
             } catch (SQLException ex) {
                 System.out.println("error in Mapper.findByID query.");
@@ -94,8 +95,11 @@ public class ProjectMapper extends Mapper<Project, java.lang.String>  {
 
     @Override
     protected Project convertResultSetToDomainModel(ResultSet rs) throws SQLException {
+        System.out.println(rs.findColumn("projectId"));
+//        rs.next();
         if(rs.getString("projectId") == null)
             return null;
+
         Project project = new Project(rs.getString("projectId"), rs.getString("title"),
                 rs.getString("imageUrlText"), rs.getLong("budget"),
                 rs.getLong("deadline"), rs.getLong("creationDate"),
@@ -152,7 +156,7 @@ public class ProjectMapper extends Mapper<Project, java.lang.String>  {
                 " Select ?, ?, ?, ?, ?, ?, ?, ? Where not exists(select * from project where projectId=?)";
     }
     protected String getUpdateWinnerUserStatement(){
-        return "update project SET project.winnerUserId = ? where projectId = ?  ";
+        return "update project SET winnerUserId = ? where projectId = ?  ";
     }
 
     public void setWinnerUser(String userId, String projectId) throws SQLException {
@@ -167,6 +171,7 @@ public class ProjectMapper extends Mapper<Project, java.lang.String>  {
     }
     @Override
     public void insertObjectToDB(Project object) throws SQLException {
+
         Connection con = DBCPDBConnectionPool.getConnection();
         String sql = getInsertStatement();
         try (PreparedStatement st = con.prepareStatement(sql)) {

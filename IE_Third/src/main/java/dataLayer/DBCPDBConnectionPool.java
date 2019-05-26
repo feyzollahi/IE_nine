@@ -5,6 +5,8 @@ import org.apache.commons.dbcp.BasicDataSource;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
+import java.sql.Driver;
+import java.sql.DriverManager;
 import java.sql.SQLException;
 
 /**
@@ -18,11 +20,16 @@ import java.sql.SQLException;
  * */
 public class DBCPDBConnectionPool {
     private static BasicDataSource ds = new BasicDataSource();
-    private final static String dbURL = "jdbc:sqlite:joboonja.db";
+    private final static String dbURL = "jdbc:mysql://localhost:3306/joboonja?useUnicode=yes&characterEncoding=UTF-8";
 
     static {
-        ds.setDriverClassName("org.sqlite.JDBC");
-
+        ds.setDriverClassName("com.mysql.cj.jdbc.Driver");
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+//
         ds.setUrl(dbURL);
         ds.setMinIdle(10);
         ds.setMaxIdle(20);
@@ -30,7 +37,8 @@ public class DBCPDBConnectionPool {
 
     public static Connection getConnection() throws SQLException {
 //        ds.set
-        return ds.getConnection();
+
+        return DriverManager.getConnection(dbURL, "root", "test");
     }
 
     private DBCPDBConnectionPool(){ }

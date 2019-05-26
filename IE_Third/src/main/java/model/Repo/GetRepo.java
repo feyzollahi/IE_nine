@@ -40,12 +40,15 @@ public class GetRepo {
 //        AdvancedProjectMapper advancedProjectMapper = new AdvancedProjectMapper();
 //        return;
         GetRepo.isSetRepo = true;
-        ProjectsRepo projectsRepo = ProjectsRepo.getInstance();
-        projectsRepo.setRepo();
         SkillsRepo skillsRepo = SkillsRepo.getInstance();
+        GetRepo.print("Skill SetRepo 0");
         skillsRepo.setRepo();
         UsersRepo usersRepo = UsersRepo.getInstance();
         usersRepo.setRepoInDataBase();
+        ProjectsRepo projectsRepo = ProjectsRepo.getInstance();
+        projectsRepo.setRepo();
+
+
     }
     public static JSONObject mergeJSONObjects(JSONObject json1, JSONObject json2) {
         JSONObject mergedJSON = new JSONObject();

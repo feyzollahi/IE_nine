@@ -5,6 +5,7 @@ import dataLayer.DBCPDBConnectionPool;
 import dataLayer.dataMappers.Mapper;
 import dataLayer.dbConnectionPool.BasicDBConnectionPool;
 import model.Project.Project;
+import model.Repo.GetRepo;
 import model.Skill.Skill;
 import model.User.User;
 
@@ -47,6 +48,7 @@ public class SkillMapper extends Mapper<Skill, String> {
 
     @Override
     public void insertObjectToDB(Skill object) throws SQLException {
+//        GetRepo.print("skillRepo");
         Connection con = DBCPDBConnectionPool.getConnection();
         String sql = getInsertStatement();
         try (PreparedStatement st = con.prepareStatement(sql)) {
@@ -66,6 +68,7 @@ public class SkillMapper extends Mapper<Skill, String> {
 
     @Override
     protected Skill convertResultSetToDomainModel(ResultSet rs) throws SQLException {
+        rs.next();
         return new Skill(rs.getString("skillName"));
     }
 

@@ -22,11 +22,17 @@ public class CheckWinningBidTask extends TimerTask {
     }
     private int getScoreOfUserInBid(Project project, User user){
         int score = 0;
+        GetRepo.print("getScore");
         for(UserSkill userSkill: user.getSkills().values()){
             long x = userSkill.getEndorsedCount() - project.getSkill(userSkill.getName()).getPoint();
             score += 10000 * x * x;
         }
-        score += (project.getBudget() - user.getBids().get(project.getId()).getBidAmount());
+        GetRepo.print("getScore1");
+        GetRepo.print("projectId" + project.getId());
+        GetRepo.print(user.getId());
+        score += (project.getBudget() - project.getBids().get(user.getId()).getBidAmount());
+        GetRepo.print("getScore2");
+
         return score;
     }
     public int getIndexOfLargest( ArrayList<Integer> array )
