@@ -8,34 +8,10 @@
   <component name="ChangeListManager">
     <list default="true" id="6ec106d0-1964-4625-8910-e7ed188bafd4" name="Default Changelist" comment="">
       <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/webTools/Startup.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Scheduler/CheckWinningBidTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Scheduler/CheckWinningBidTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Scheduler/Scheduler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Scheduler/Scheduler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/SignUp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/SignUp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dataLayer/DBCPDBConnectionPool.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dataLayer/DBCPDBConnectionPool.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dataLayer/dataMappers/ProjectMapper/AdvancedProjectMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dataLayer/dataMappers/ProjectMapper/AdvancedProjectMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dataLayer/dataMappers/ProjectMapper/BidMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dataLayer/dataMappers/ProjectMapper/BidMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dataLayer/dataMappers/ProjectMapper/ProjectMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dataLayer/dataMappers/ProjectMapper/ProjectMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dataLayer/dataMappers/ProjectMapper/ProjectSkillMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dataLayer/dataMappers/ProjectMapper/ProjectSkillMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dataLayer/dataMappers/SkillMapper/SkillMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dataLayer/dataMappers/SkillMapper/SkillMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dataLayer/dataMappers/UserMapper/UserMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dataLayer/dataMappers/UserMapper/UserMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/model/Repo/GetRepo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/Repo/GetRepo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/model/Repo/SkillsRepo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/Repo/SkillsRepo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/web.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/web.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/ProjectSkillMapperTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ProjectSkillMapperTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/UserMapperListTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/UserMapperListTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/UserMapperTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/UserMapperTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/jwtTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/jwtTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/META-INF/ie_third.kotlin_module" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/model/Repo/GetRepo.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/model/Repo/GetRepo.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/model/Repo/SkillsRepo.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/model/Repo/SkillsRepo.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/ie_third/WEB-INF/classes/META-INF/ie_third.kotlin_module" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/target/ie_third/WEB-INF/classes/model/Repo/GetRepo.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/ie_third/WEB-INF/classes/model/Repo/GetRepo.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/ie_third/WEB-INF/classes/model/Repo/SkillsRepo.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/ie_third/WEB-INF/classes/model/Repo/SkillsRepo.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/ie_third/WEB-INF/lib/json-simple-1.1.1.jar" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/target/ie_third/WEB-INF/web.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/ie_third/WEB-INF/web.xml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
@@ -90,12 +66,14 @@
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="java" value="557" />
+          <entry key="txt" value="35" />
           <entry key="xml" value="79" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="JAVA" value="557" />
+          <entry key="PLAIN_TEXT" value="35" />
           <entry key="XML" value="79" />
         </counts>
       </usages-collector>
@@ -149,7 +127,7 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/dataLayer/DBCPDBConnectionPool.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="55">
+            <state relative-caret-position="240">
               <caret line="22" column="116" selection-start-line="22" selection-start-column="116" selection-end-line="22" selection-end-column="116" />
             </state>
           </provider>
@@ -531,8 +509,16 @@
       <workItem from="1558689191345" duration="716000" />
       <workItem from="1558694318934" duration="1199000" />
       <workItem from="1558778105652" duration="21439000" />
-      <workItem from="1558868517294" duration="1838000" />
+      <workItem from="1558868517294" duration="2176000" />
     </task>
+    <task id="LOCAL-00001" summary="migrate to mysql and fix some bugs">
+      <created>1558870669368</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1558870669368</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -568,11 +554,10 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="25192000" />
+    <option name="totallyTimeSpent" value="25530000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="67" y="25" width="1299" height="743" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25778133" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -616,6 +601,10 @@
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="migrate to mysql and fix some bugs" />
+    <option name="LAST_COMMIT_MESSAGE" value="migrate to mysql and fix some bugs" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -949,7 +938,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/dataLayer/DBCPDBConnectionPool.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="55">
+        <state relative-caret-position="240">
           <caret line="22" column="116" selection-start-line="22" selection-start-column="116" selection-end-line="22" selection-end-column="116" />
         </state>
       </provider>
